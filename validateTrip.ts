@@ -1,7 +1,7 @@
 function validateTrips(shipment: Shipment, trips: Trip[]): boolean {
   const pickups = shipment.pickupPoints;
   const dropPoints = shipment.dropPoints;
-  const warehouse: string | undefined = getWarehouseFromTrips(trips); // Extract warehouse (if any)
+  const warehouse: string | undefined = getWarehouseFromTrips(trips); 
 
   // Check for warehouse consistency
   if (warehouse && !allTripsUseSameWarehouse(trips, warehouse)) {
@@ -72,3 +72,68 @@ interface Trip {
   dropPoints: string[]; // List of drop-off points in this trip
   warehouse?: string; // Optional warehouse waypoint in this trip
 }
+
+// Test cases
+const testCases: { shipment: Shipment, trips: Trip[], expected: boolean }[] = [
+  // Test case 1: Basic Case
+  {
+    shipment: {
+      pickupPoints: ['A', 'B', 'C'],
+      dropPoints: ['X', 'Y', 'Z']
+    },
+    trips: [{
+      pickupPoints: ['A', 'B', 'C'],
+      dropPoints: ['X', 'Y', 'Z']
+    }],
+    expected: true
+  },
+  // Test case 2: Case with Missing Pickups or Drop Points
+  {
+    shipment: {
+      pickupPoints: ['A', 'B', 'C'],
+      dropPoints: ['X', 'Y', 'Z']
+    },
+    trips: [{
+      pickupPoints: ['A', 'C'], // Missing pickup point 'B'
+      dropPoints: ['X', 'Y', 'Z']
+    }],
+    expected: false
+  },
+  // Test case 3: Case with Duplicate Pickups or Drop Points
+  {
+    shipment: {
+      pickupPoints: ['A', 'B', 'C'],
+      dropPoints: ['X', 'Y', 'Z']
+    },
+    trips: [{
+      pickupPoints: ['A', 'B', 'C', 'A'], // Duplicate pickup point 'A'
+      dropPoints: ['X', 'Y', 'Z']
+    }],
+    expected: false
+  },
+  // Test case 4: Case with Multiple Trips
+  {
+    shipment: {
+      pickupPoints: ['A', 'B', 'C'],
+      dropPoints: ['X', 'Y', 'Z']
+    },
+    trips: [{
+      pickupPoints: ['A', 'B'],
+      dropPoints: ['X']
+    }, {
+      pickupPoints: ['C'],
+      dropPoints: ['Y', 'Z']
+    }],
+    expected: true
+  }
+];
+
+// Running test cases
+testCases.forEach((testCase, index) => {
+  console.log(`Test Case ${index + 1}:`);
+  console.log(`Shipment:`, testCase.shipment);
+  console.log(`Trips:`, testCase.trips);
+  console.log(`Expected Output:`, testCase.expected);
+  console.log(`Result:`, validateTrips(testCase.shipment, testCase.trips));
+  console.log(`---`);
+});
