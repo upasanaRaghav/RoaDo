@@ -128,7 +128,18 @@ const testCases: { shipment: Shipment, trips: Trip[], expected: boolean }[] = [
   }
 ];
 
-// Running test cases
+//expected outcomess
+
+// Test Case 1: The shipment has all pickup and drop points covered by a single trip, so output should be true.
+
+// Test Case 2: One of the pickups ('B') is missing in the trip, so the output is false, 
+
+// Test Case 3: There is a duplicate pickup ('A') in the trip, so the output is false,
+
+// Test Case 4: Two trips cover all the pickup and drop points of the shipment, so the output is true, 
+
+ 
+// Running all the above test cases to validate
 testCases.forEach((testCase, index) => {
   console.log(`Test Case ${index + 1}:`);
   console.log(`Shipment:`, testCase.shipment);
